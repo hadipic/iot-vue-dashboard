@@ -26,7 +26,7 @@ export default {
         </div>
     </div>
     <div :class="['sidenav', isSideNavActive ? '' : 'sidenav-hidden']">
-        <router-link to="/relay"><img class="icon" src="../assets/light.svg" alt="light SVG" />روشنایی</router-link>
+        <router-link to="/relay"><img class="icon" src="../assets/light.svg" alt="light SVG" /> مصرف کننده ها</router-link>
         <a href="#"><img class="icon" src="../assets/thermometer.svg" alt="thermometer SVG" />دما</a>
         <a href="#"><img class="icon" src="../assets/profile.svg" alt="profile SVG" />پروفایل</a>
         <a href="#"><img class="icon-settings" src="../assets/cog.svg" alt="settings SVG" />تنظیمات</a>
@@ -40,7 +40,7 @@ export default {
 /* Style the header with a grey background and some padding */
 .header {
     overflow: hidden;
-    background-color: #f1f1f1;
+    background-color: #ec944d;
     padding: 20px 10px;
     height: 100px;
     display: flex;
@@ -62,8 +62,7 @@ export default {
 
 /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header a.logo {
-    font-size: 25px;
-    font-weight: bold;
+    font-size: 28px;
 }
 
 /* Change the background color on mouse-over */
@@ -74,7 +73,7 @@ export default {
 
 /* Style the active/current link*/
 .header a.active {
-    background-color: hsla(160, 100%, 37%, 1);
+    background-color: rgb(248, 198, 164);
     color: white;
 }
 
@@ -113,7 +112,7 @@ export default {
     z-index: 1;
     /* Stay on top */
     right: 0;
-    background-color: rgb(192, 240, 210);
+    background-color: rgb(235, 247, 182);
     /* Black*/
     overflow-x: hidden;
     /* Disable horizontal scroll */

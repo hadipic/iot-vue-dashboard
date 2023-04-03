@@ -3,7 +3,7 @@ var visibleFlag = 1;
 var statusMsg = false;
 var connected = false;
 var doingsave = false;
-var _from = 1;  
+var _from = 1;
 var _to = 2;
 var state = {};
 createButtons(1, 2);

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Relay from '../components/Relay.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -19,7 +18,7 @@ const router = createRouter({
     }, {
       path: '/relay',
       name: 'relay',
-      component: Relay
+      component: () => import('../views/Relay.vue')
     }
   ]
 })

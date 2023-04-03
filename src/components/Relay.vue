@@ -1,27 +1,51 @@
 <template>
-    <div id="statusView" style=""></div>
-    <div class="block">
-        <div class="zone-title" style="text-align:right">
-            <p>کنترل مصرف کننده ها</p>
+    <div class="wrapper">
+        <div id="statusView" style=""></div>
+        <div class="block flex">
+            <div class="zone-title">
+                <p>کنترل مصرف کننده ها</p>
+            </div>
+            <hr />
+            <div class="relays" v-for="relay in relays">
+                <p>{{ relay.name }}
+                </p>
+                <button :class="relay.state" type="button" @click="toggleRelay(relay.name)">{{
+                    relay.state
+                }}</button>
+            </div>
+            <div class="return-btn">
+                <button type="button" onclick="parent.location='/'">بازگشت</button>
+            </div>
         </div>
-        <hr />
-        <div id="divButtons"> </div>
 
-        <button type="button" onclick="parent.location='/'">بازگشت</button>
+        <br />
+        <br />
     </div>
-
-    <br />
-    <br />
-</template>
+</template> 
 <script>
+import axios from 'axios';
 export default {
+
     data() {
         return {
-
+            relays: [{ name: 'Foo', state: 'On' }, { name: 'Bar', state: 'Off' }]
         }
     },
-    methods:{
-        
+    methods: {
+        toggleRelay: function (relayName) {
+            for (let relay in this.relays) {
+                if (this.relays[relay].name === relayName)
+                    if (this.relays[relay].state === 'On') {
+                        this.relays[relay].state = 'Off';
+                    }
+                    else {
+                        this.relays[relay].state = 'On'
+                    }
+            }
+        },
+        getRelay: function () {
+
+        }
     }
 }
 </script>
@@ -101,5 +125,62 @@ label[role="button"]:focus,
 [role="button"]:focus {
     background: #dcdcdc;
     opacity: 1
+}
+
+.wrapper {
+    align-items: center;
+    margin-right: auto;
+    /* 1 */
+    margin-left: auto;
+    /* 1 */
+
+    max-width: 960px;
+    /* 2 */
+
+    padding-right: 10px;
+    /* 3 */
+    padding-left: 10px;
+    /* 3 */
+}
+
+button {
+    border-radius: 10px !important
+}
+
+.zone-title p {
+    flex: 1;
+    font-size: 20px;
+    line-height: 75px;
+    text-align: right;
+}
+
+.relays {
+    line-height: 75px;
+    display: flex;
+}
+
+.relays p {
+    font-size: 18px;
+    flex: 1;
+}
+
+.relays button.On {
+    background-color: rgb(81, 221, 81);
+}
+
+.relays button {
+    flex: 0.25;
+    background-color: rgb(172, 172, 172);
+}
+
+.return-btn {
+    display: flex;
+    align-content: center;
+}
+
+.return-btn button {
+    flex: 1;
+    margin-left: 400px;
+    margin-right: 400px;
 }
 </style>
