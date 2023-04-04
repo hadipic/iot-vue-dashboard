@@ -27,7 +27,7 @@ export default {
     </div>
     <div :class="['sidenav', isSideNavActive ? '' : 'sidenav-hidden']">
         <router-link to="/relay"><img class="icon" src="../assets/light.svg" alt="light SVG" /> مصرف کننده ها</router-link>
-        <a href="#"><img class="icon" src="../assets/thermometer.svg" alt="thermometer SVG" />دما</a>
+        <a href="#"><img class="icon" src="../assets/thermometer.svg" alt="thermometer SVG" />ترموستات</a>
         <a href="#"><img class="icon" src="../assets/profile.svg" alt="profile SVG" />پروفایل</a>
         <a href="#"><img class="icon-settings" src="../assets/cog.svg" alt="settings SVG" />تنظیمات</a>
     </div>

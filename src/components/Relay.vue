@@ -9,11 +9,13 @@
             <div class="relays" v-for="relay in relays">
                 <p>{{ relay.name }}
                 </p>
-                <button :class="relay.state" type="button" @click="toggleRelay(relay.name)">{{
+                <button :class="relay.state" type="button" @click="toggleRelay(relay.id)">{{
                     relay.state
                 }}</button>
             </div>
             <div class="return-btn">
+                <button type="button" @click="getRelay()">test</button>
+
                 <button type="button" onclick="parent.location='/'">بازگشت</button>
             </div>
         </div>
@@ -28,24 +30,71 @@ export default {
 
     data() {
         return {
-            relays: [{ name: 'Foo', state: 'On' }, { name: 'Bar', state: 'Off' }]
+            relays: [{ id: 'relay1', state: '', name: '' }, { id: 'relay2', state: '', name: '' }]
         }
     },
     methods: {
-        toggleRelay: function (relayName) {
+        toggleRelay: function (relayId) {
             for (let relay in this.relays) {
-                if (this.relays[relay].name === relayName)
+                if (this.relays[relay].id === relayId)
                     if (this.relays[relay].state === 'On') {
                         this.relays[relay].state = 'Off';
+                        axios.get(`http://0.0.0.0:5731/api/relay?${relayId}=0`)
+                            .then(function (response) {
+                                // handle success
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            })
                     }
                     else {
                         this.relays[relay].state = 'On'
+                        axios.get(`http://0.0.0.0:5731/api/relay?${relayId}=1`)
+                            .then(function (response) {
+                                // handle success
+                                console.log(response);
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log(error);
+                            })
                     }
             }
+            this.$forceUpdate()
         },
         getRelay: function () {
+            let self = this;
+            axios.get('http://0.0.0.0:5731/api/relay')
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+                    let relays = response.data;
+                    self.relays[0].name = relays.relay1name;
+                    if (relays.relay1 == 1)
+                        self.relays[0].state = 'On';
+                    else if (relays.relay1 == 0)
+                        self.relays[0].state = 'Off';
 
+                    self.relays[1].name = relays.relay2name;
+                    if (relays.relay2 == 1)
+                        self.relays[1].state = 'On';
+                    else if (relays.relay2 == 0)
+                        self.relays[1].state = 'Off';
+
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
         }
+    },
+    beforeMount: function () {
+        this.getRelay()
+    },
+    beforeUpdate: function () {
+        this.getRelay()
     }
 }
 </script>
