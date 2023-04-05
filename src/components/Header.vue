@@ -9,6 +9,10 @@ export default {
     methods: {
         toggleSideBar() {
             this.isSideNavActive = !this.isSideNavActive;
+        },
+        getCurrentRoute(route) {
+            console.log(this.$route.path)
+            return ((this.$route.path === route) ? 'active' : '');
         }
     }
 }
@@ -16,8 +20,17 @@ export default {
 
 <template>
     <div class="header">
-        <button id="expand-btn" @click="toggleSideBar()"><img class="extend-icon" src="../assets/extend.svg"
-                alt="extend SVG" /></button>
+        <button id="expand-btn" @click="toggleSideBar()">
+            <svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/"
+                style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                <g id="Menu" transform="matrix(1.10061,0,0,1.16828,-25.1524,-42.0712)">
+                    <path
+                        d="M414,375.003C414,370.68 410.49,367.171 406.168,367.171L93.832,367.171C89.51,367.171 86,370.68 86,375.003L86,390.668C86,394.99 89.51,398.5 93.832,398.5L406.168,398.5C410.49,398.5 414,394.99 414,390.668L414,375.003ZM414,242.168C414,237.845 410.49,234.335 406.168,234.335L93.832,234.335C89.51,234.335 86,237.845 86,242.168L86,257.832C86,262.155 89.51,265.665 93.832,265.665L406.168,265.665C410.49,265.665 414,262.155 414,257.832L414,242.168ZM414,109.332C414,105.01 410.49,101.5 406.168,101.5L93.832,101.5C89.51,101.5 86,105.01 86,109.332L86,124.997C86,129.32 89.51,132.829 93.832,132.829L406.168,132.829C410.49,132.829 414,129.32 414,124.997L414,109.332Z"
+                        style="fill:#F57F17" />
+                </g>
+            </svg>
+        </button>
         <a href="#default" class="logo">تست</a>
         <div class="header-right">
 
@@ -26,7 +39,9 @@ export default {
         </div>
     </div>
     <div :class="['sidenav', isSideNavActive ? '' : 'sidenav-hidden']">
-        <router-link to="/relay"><img class="icon" src="../assets/light.svg" alt="light SVG" /> مصرف کننده ها</router-link>
+        <router-link to="/relay" :class="getCurrentRoute('/relay')"><img class="icon" src="../assets/light.svg"
+                alt="light SVG" /> مصرف کننده
+            ها</router-link>
         <a href="#"><img class="icon" src="../assets/thermometer.svg" alt="thermometer SVG" />ترموستات</a>
         <a href="#"><img class="icon" src="../assets/profile.svg" alt="profile SVG" />پروفایل</a>
         <a href="#"><img class="icon-settings" src="../assets/cog.svg" alt="settings SVG" />تنظیمات</a>
@@ -40,17 +55,18 @@ export default {
 /* Style the header with a grey background and some padding */
 .header {
     overflow: hidden;
-    background-color: #ec944d;
+    background-color: #428bca;
     padding: 20px 10px;
     height: 100px;
     display: flex;
+    align-items: center;
     top: fixed;
 }
 
 /* Style the header links */
 .header a {
     float: right;
-    color: black;
+    color: white;
     text-align: center;
     padding: 10px;
     text-decoration: none;
@@ -67,13 +83,12 @@ export default {
 
 /* Change the background color on mouse-over */
 .header a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Style the active/current link*/
 .header a.active {
-    background-color: rgb(248, 198, 164);
+    background-color: #A393BF;
     color: white;
 }
 
@@ -98,11 +113,19 @@ export default {
 #expand-btn {
     border: 0;
     border-radius: 15px;
-    background-color: black(190, 189, 189);
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border: 2px dotted transparent;
+    transition: all 320ms;
+}
+
+#expand-btn:hover {
+    border: 2px dotted #ABD2FA;
 }
 
 .sidenav {
-    border-radius: 5px;
     height: 100%;
     /* 100% Full-height */
     width: 200px;
@@ -112,11 +135,11 @@ export default {
     z-index: 1;
     /* Stay on top */
     right: 0;
-    background-color: rgb(235, 247, 182);
+    background-color: #F57F17;
     /* Black*/
     overflow-x: hidden;
     /* Disable horizontal scroll */
-    padding-top: 60px;
+    padding-top: 20px;
     /* Place content 60px from the top */
     transition: 0.5s;
     /* 0.5 second transition effect to slide in the sidenav */
@@ -133,9 +156,13 @@ export default {
     position: relative;
 }
 
-/* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
-    color: #f1f1f1;
+    background-color: rgba(171, 210, 250, 0.4);
+}
+
+.sidenav a.active {
+    background-color: #00539C;
+    color: white;
 }
 
 /* Position and style the close button (top right corner) */

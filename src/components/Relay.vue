@@ -1,27 +1,25 @@
 <template>
     <div class="wrapper">
-        <div id="statusView" style=""></div>
-        <div class="block flex">
             <div class="zone-title">
                 <p>کنترل مصرف کننده ها</p>
             </div>
-            <hr />
-            <div class="relays" v-for="relay in relays">
-                <p>{{ relay.name }}
-                </p>
-                <button :class="relay.state" type="button" @click="toggleRelay(relay.id)">{{
+            <div class="relays-container">
+                <div class="relays" v-for="relay in relays">
+                    <p>{{ relay.name }}
+                    </p>
+                    <label class="switch">
+                        <input :checked="relay.state === 'On'" type="checkbox" @click="toggleRelay(relay.id)">
+                        <span class="slider round"></span>
+                        <span class="switch-title" :class="relay.state">{{ relay.state }}</span>
+                    </label>
+                    <!-- <button :class="relay.state" type="button" @click="toggleRelay(relay.id)">{{
                     relay.state
-                }}</button>
+                }}</button> -->
+                </div>
             </div>
             <div class="return-btn">
-                <button type="button" @click="getRelay()">test</button>
-
                 <button type="button" onclick="parent.location='/'">بازگشت</button>
             </div>
-        </div>
-
-        <br />
-        <br />
     </div>
 </template> 
 <script>
@@ -30,7 +28,8 @@ export default {
 
     data() {
         return {
-            relays: [{ id: 'relay1', state: '', name: '' }, { id: 'relay2', state: '', name: '' }]
+            relays: [{ id: 'relay1', state: '', name: '' }, { id: 'relay2', state: '', name: '' }],
+            interval: null
         }
     },
     methods: {
@@ -95,6 +94,14 @@ export default {
     },
     beforeUpdate: function () {
         this.getRelay()
+    },
+    created() {
+        this.interval = setInterval(() => {
+            this.getRelay()
+        }, 3000)
+    },
+    destroyed() {
+        clearInterval(this.interval)
     }
 }
 </script>
@@ -110,71 +117,7 @@ header {
 }
 
 
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
-    border-style: none;
-    padding: 0
-}
 
-button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
-    -webkit-appearance: button
-}
-
-button {
-    overflow: visible;
-    text-transform: none
-}
-
-button,
-[type="button"],
-[type="submit"],
-[type="reset"],
-a.button,
-label.button,
-.button,
-a[role="button"],
-label[role="button"],
-[role="button"] {
-    display: inline-block;
-    background: rgba(220, 220, 220, 0.75);
-    color: #212121;
-    border: 0;
-    border-radius: .125rem;
-    padding: 0.5rem 0.75rem;
-    margin: .5rem;
-    text-decoration: none;
-    transition: background 0.3s;
-    cursor: pointer
-}
-
-button:hover,
-button:focus,
-[type="button"]:hover,
-[type="button"]:focus,
-[type="submit"]:hover,
-[type="submit"]:focus,
-[type="reset"]:hover,
-[type="reset"]:focus,
-a.button:hover,
-a.button:focus,
-label.button:hover,
-label.button:focus,
-.button:hover,
-.button:focus,
-a[role="button"]:hover,
-a[role="button"]:focus,
-label[role="button"]:hover,
-label[role="button"]:focus,
-[role="button"]:hover,
-[role="button"]:focus {
-    background: #dcdcdc;
-    opacity: 1
-}
 
 .wrapper {
     align-items: center;
@@ -182,18 +125,21 @@ label[role="button"]:focus,
     /* 1 */
     margin-left: auto;
     /* 1 */
-
-    max-width: 960px;
+    margin-top: 100px;
+    max-width: 70%;
     /* 2 */
-
-    padding-right: 10px;
-    /* 3 */
-    padding-left: 10px;
-    /* 3 */
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #00539C;
+    height: max-content;
 }
 
 button {
     border-radius: 10px !important
+}
+
+.zone-title {
+    border-bottom: 2px solid #00539C;
 }
 
 .zone-title p {
@@ -206,15 +152,13 @@ button {
 .relays {
     line-height: 75px;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .relays p {
     font-size: 18px;
     flex: 1;
-}
-
-.relays button.On {
-    background-color: rgb(81, 221, 81);
 }
 
 .relays button {
@@ -224,12 +168,113 @@ button {
 
 .return-btn {
     display: flex;
+    justify-content: flex-end;
     align-content: center;
 }
 
 .return-btn button {
-    flex: 1;
-    margin-left: 400px;
-    margin-right: 400px;
+    outline: none;
+    border: none;
+    padding: 15px;
+    margin-left: 0;
+    transition: all 320ms;
+    font-size: 16px;
+    background-color: #ABD2FA;
+}
+
+.return-btn button:hover {
+    background-color: #ABD2FAAA;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 34px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(171, 210, 250, 0.7);
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #F57F17;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #ffffff;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(44px);
+    -ms-transform: translateX(44px);
+    transform: translateX(44px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.switch-title {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 15px;
+    z-index: 1;
+}
+
+.switch-title.On {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 15px;
+    z-index: 1;
+}
+
+.relays-container {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 300px;
+    overflow-y: auto;
 }
 </style>
